@@ -6,7 +6,7 @@
     <string name="lbl_endereco">Endereco</string>
     <string name="lbl_email">Email</string>
     <string name="lbl_telefone">Telefone</string>
-    <string name="title_menu_ok">OK</string>
+    <string name="title_menu_ok">Salvar</string>
     <string name="title_menu_cancelar">Menu</string>
     <string name="title_aviso">Aviso</string>
     <string name="message_campos_invalidos_brancos">Há campos inválidos ou em branco</string>

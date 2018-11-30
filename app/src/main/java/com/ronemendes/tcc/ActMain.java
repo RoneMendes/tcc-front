@@ -35,18 +35,20 @@ public class ActMain extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-     //   fab = (FloatingActionButton) findViewById(R.id.fab);
         lstDados = (RecyclerView)findViewById(R.id.lstDados);
 
+        //recuperando os componentes da interface.
         edtLogin   = (EditText)findViewById(R.id.edtLogin);
         edtSenha2  = (EditText)findViewById(R.id.edtSenha2);
     }
 
+    // método para autenticar client
     public void login(View view){
 
         String email = edtLogin.getText().toString();
         String senha = edtSenha2.getText().toString();
 
+        //exibir mensagem de validação dos campos
         if(email.isEmpty() || senha.isEmpty()){ //exibir mensagem de validação
             AlertDialog.Builder dlg = new AlertDialog.Builder(this);
             dlg.setTitle(R.string.title_aviso);
@@ -56,21 +58,26 @@ public class ActMain extends AppCompatActivity {
             return;
         }
 
+        //validando os parâmetros com os capos do banco
         RequestParams params = new RequestParams();
         params.put("email", email);
         params.put("senha", senha);
 
+        //chamando a api REST
         ApiRestClient.post("autenticar", params , new JsonHttpResponseHandler() {
+
+            //Em caso de sucesso
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //direciona para tela de listagem (idealmente)
+
                 Intent it = new Intent(ActMain.this, CadClienteActivity.class);
                 startActivity(it);
             }
 
+            //Em caso de falha
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                //mostra mensagem ero
+                //mostrar mensagem erro
                 System.out.println(responseString);
             }
         });

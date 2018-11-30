@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.loopj.android.http.*;
 
-
+//Classe da API REST
 public class  ApiRestClient {
-    private static final String BASE_URL = "http://192.168.1.35/TCC/webservice.php/";
+    private static final String BASE_URL = "https://iron-store.herokuapp.com/index.php/";
     //private static final String BASE_URL = "https://jsonplaceholder.typicode.com/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();

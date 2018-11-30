@@ -42,7 +42,7 @@ public class CadClienteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //recuperando os componentes da interface. Classe 'R' referencia a pasta "res" do projeto
+        //recuperando os componentes da interface.
         edtNome      = (EditText)findViewById(R.id.edtNome);
         editCpf       = (EditText)findViewById(R.id.editCpf);
         edtEndereco  = (EditText)findViewById(R.id.edtEndereco);
@@ -54,6 +54,7 @@ public class CadClienteActivity extends AppCompatActivity {
 
     }
 
+    // método para cadastrar cliente
     public void cadastrarCliente(){
 
         String nome = edtNome.getText().toString();
@@ -65,7 +66,7 @@ public class CadClienteActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString();
         String senha = editSenha.getText().toString();
 
-        //exibir mensagem de validação
+        //exibir mensagem de validação dos campos
         if(nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || municipio.isEmpty() ||
                 estado.isEmpty() || telefone.isEmpty()|| email.isEmpty() || senha.isEmpty()){
             AlertDialog.Builder dlg = new AlertDialog.Builder(this);
@@ -76,6 +77,7 @@ public class CadClienteActivity extends AppCompatActivity {
             return;
         }
 
+        //validando os parâmetros com os capos do banco
         RequestParams params = new RequestParams();
         params.put("nome", nome);
         params.put("cpf", cpf);
@@ -86,15 +88,19 @@ public class CadClienteActivity extends AppCompatActivity {
         params.put("email", email);
         params.put("senha", senha);
 
+        //chamando a api REST
         ApiRestClient.post("clientes/cadastrar", params , new JsonHttpResponseHandler() {
+
+            //Em caso de sucesso
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println("Cliente cadastrado");
             }
 
+            //Em caso de falha
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                //mostra mensagem ero
+                //mostra mensagem erro
                 System.out.println(responseString);
             }
         });
@@ -102,61 +108,7 @@ public class CadClienteActivity extends AppCompatActivity {
 
     }
 
-    /*função para validar campos
-    private void validaCampos(){
 
-        boolean res = false;
-
-        String nome = edtNome.getText().toString();
-        String endereco = edtEndereco.getText().toString();
-        String email = edtEmail.getText().toString();
-        String telefone = edtTelefone.getText().toString();
-
-        //se estiver vazio
-        if(res = isCampoVazio(nome)){
-            edtNome.requestFocus();//retorna o foco para o campo nome
-        }
-        else
-            if (res = isCampoVazio(endereco)){
-                edtEndereco.requestFocus(); //retorna o foco para o campo endereco
-            }
-            else
-                if(res = !isEmailValido(email)){ //se não estiver vazio
-                    edtEmail.requestFocus(); //retorna foco para o campo email
-                }
-                else
-                    if (res = isCampoVazio(telefone)){
-                        edtTelefone.requestFocus();
-                    }
-        if(res){ //exibir mensagem de validação
-            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-            dlg.setTitle(R.string.title_aviso);
-            dlg.setMessage(R.string.message_campos_invalidos_brancos);
-            dlg.setNeutralButton(R.string.lbl_ok, null); //exibe um botão na janela de dialogo
-            dlg.show();
-
-        }
-
-    }
-    */
-
-    /*
-    //verificar se campos estão vazios
-    private boolean isCampoVazio(String valor){
-
-        boolean resultado = (TextUtils.isEmpty(valor) || valor.trim().isEmpty());
-        return resultado;
-    }
-    */
-    //função para verificar email
-
-    /*
-    private boolean isEmailValido(String email){
-
-        boolean resultado = (!isCampoVazio(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-        return resultado;
-    }
-    */
 
     @Override
     //configurar menu do app
@@ -178,14 +130,13 @@ public class CadClienteActivity extends AppCompatActivity {
 
             case R.id.action_ok:
 
-                //Webservice cadastrar
-                //this.getClientes();
+                //chamando o método cadastrar no botão de Salvar
                 this.cadastrarCliente();
-                //validaCampos();
-                Toast.makeText(this, "Cliente cadastrado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Cliente cadastrado com sucesso", Toast.LENGTH_SHORT).show();
 
                 break;
 
+            //action do botão de menu
             case R.id.action_cancelar:
 
                 //Toast.makeText(this, "Botão Cancelar Selecionado", Toast.LENGTH_SHORT).show();
@@ -197,28 +148,28 @@ public class CadClienteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getClientes() {
-         ApiRestClient.get("clientes", null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                System.out.println(response);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Pull out the first event on the public timeline
-
-                System.out.println(response);
-//                try {
-//                    JSONObject firstEvent = timeline.get(0);
-//                    String tweetText = firstEvent.getString("text");
-//                }catch (Exception )
-
-
-                // Do something with the response
-
-            }
-        });
-    }
+//    public void getClientes() {
+//         ApiRestClient.get("clientes", null, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                // If the response is JSONObject instead of expected JSONArray
+//                System.out.println(response);
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                // Pull out the first event on the public timeline
+//
+//                System.out.println(response);
+////                try {
+////                    JSONObject firstEvent = timeline.get(0);
+////                    String tweetText = firstEvent.getString("text");
+////                }catch (Exception )
+//
+//
+//                // Do something with the response
+//
+//            }
+//        });
+//    }
 }
